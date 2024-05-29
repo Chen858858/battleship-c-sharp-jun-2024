@@ -41,11 +41,15 @@ namespace Battleship
                 new Tuple<string, int>("Destroyer", 3),
                 new Tuple<string, int>("Battleship", 4)
             };
+            List<string> directions = new List<string>()
+            {
+                "v",
+                "h"
+            };
 
             // Human states name.
             Console.WriteLine("What is your name?");
             humanPlayer.name = Console.ReadLine();
-            Console.WriteLine("\n");
             Console.WriteLine("Hello {0}.\n", humanPlayer.name);
 
             // Robot states name.
@@ -98,6 +102,29 @@ namespace Battleship
             }
             Console.WriteLine("You have placed all of your 5 ships. This is what your board looks like:");
             Console.WriteLine(humanPlayer.getBoard(false));
+
+            // Computer place ships.
+            Console.WriteLine("Now {0} is placing its ships.", robotPlayer.name);
+            foreach(Tuple<string, int> shipType in shipTypes)
+            {
+                Random rand2 = new Random();
+                while (true)
+                {
+                    int x = rand2.Next(0, 10);
+                    int y = rand2.Next(0, 10);
+                    string direction = directions[rand2.Next(0, 2)];
+                    IDictionary<string, bool> placeShipInfo = robotPlayer.placeShip(
+                        (object)new Tuple<string, string>(x.ToString(), y.ToString()),
+                        shipType.Item2,
+                        direction);
+                    if (placeShipInfo["shipPlaced"])
+                    {
+                        break;
+                    }
+                }
+                Console.WriteLine("{0} has placed its {1}.", robotPlayer.name, shipType.Item1);
+            }
+            Console.WriteLine(robotPlayer.getBoard(false));
         }
 
         static void printDictionaryStringBool(IDictionary<string, bool> dict)

@@ -5,13 +5,11 @@ namespace Battleship
     class Player
     {
         public string name { get; set; }
-        private static Board playerBoard;
+        public Board playerBoard;
 
-        public Player()
-        {
+        public Player() { 
             playerBoard = new Board();
         }
-
         /*
          * Function description:
          *  Places ship on player's board.

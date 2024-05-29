@@ -4,9 +4,9 @@ namespace Battleship
 {
     class Board
     {
-        private static List<Tuple<int, int>> shipCoords = new List<Tuple<int, int>>();
-        private static List<Tuple<int, int>> strikeCoords = new List<Tuple<int, int>>();
-        private static List<Tuple<int, int>> hitCoords = new List<Tuple<int, int>>();
+        private List<Tuple<int, int>> shipCoords = new List<Tuple<int, int>>();
+        private List<Tuple<int, int>> strikeCoords = new List<Tuple<int, int>>();
+        private List<Tuple<int, int>> hitCoords = new List<Tuple<int, int>>();
 
         /*
          * Function description:

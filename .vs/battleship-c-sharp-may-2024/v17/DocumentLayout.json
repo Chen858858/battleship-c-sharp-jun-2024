@@ -22,8 +22,22 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024\\Program.cs",
+              "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Program.cs",
+              "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024\\Program.cs",
+              "RelativeToolTip": "battleship-c-sharp-may-2024\\Program.cs",
+              "ViewState": "AQIAABQAAAAAAAAAAAAzwB0AAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-23T04:46:14.933Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -32,9 +46,10 @@
               "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Player.cs",
               "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024\\Player.cs",
               "RelativeToolTip": "battleship-c-sharp-may-2024\\Player.cs",
-              "ViewState": "AQIAACsAAAAAAAAAAAA1wEoAAAAbAAAA",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAAAAoAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-23T04:50:33.589Z"
+              "WhenOpened": "2024-05-23T04:50:33.589Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -44,21 +59,9 @@
               "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Board.cs",
               "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024\\Board.cs",
               "RelativeToolTip": "battleship-c-sharp-may-2024\\Board.cs",
-              "ViewState": "AQIAAMUAAAAAAAAAAAAkwNgAAAAwAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-23T17:12:49.355Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024\\Program.cs",
-              "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Program.cs",
-              "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024\\Program.cs",
-              "RelativeToolTip": "battleship-c-sharp-may-2024\\Program.cs",
-              "ViewState": "AQIAAEkAAAAAAAAAAAAwwFgAAABnAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-23T04:46:14.933Z",
+              "WhenOpened": "2024-05-23T17:12:49.355Z",
               "EditorCaption": ""
             }
           ]

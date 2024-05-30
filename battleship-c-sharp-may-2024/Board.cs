@@ -168,7 +168,7 @@ namespace Battleship
             int yNum = int.Parse(y);
 
             // Checks if the coordinate has been already struck.
-            if(strikeCoords.Contains(Tuple.Create(xNum, yNum)))
+            if(strikeCoords.Contains(new Tuple<int, int>(xNum, yNum)))
             {
                 return info;
             }
@@ -177,6 +177,13 @@ namespace Battleship
             // Place the strike.
             strikeCoords.Add(Tuple.Create(xNum, yNum));
             info["strikePlaced"] = true;
+
+            // Checks if the strike is a hit.
+            if(shipCoords.Contains(new Tuple<int, int>(xNum, yNum)))
+            {
+                info["isHit"] = true;
+                hitCoords.Add(Tuple.Create(xNum, yNum));
+            }
 
             // Checks if all ships have been hit, thus ending the game.
             if(hitCoords.Count == shipCoords.Count)

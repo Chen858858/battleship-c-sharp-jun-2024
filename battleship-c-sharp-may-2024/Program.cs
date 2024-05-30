@@ -26,7 +26,9 @@ namespace Battleship
         static void Main(string[] args)
         {
             Player humanPlayer = new Player();
+            humanPlayer.isRobot = false;
             Player robotPlayer = new Player();
+            robotPlayer.isRobot = true;
             List<string> robotNames = new List<string>() {
                 "The Machine",
                 "Mr. Roboto",
@@ -46,16 +48,30 @@ namespace Battleship
                 "v",
                 "h"
             };
+            List<Tuple<int, int>> robotTarget = new List<Tuple<int, int>>();
+            IDictionary<string, bool> robotInitTargetSorrounding = new Dictionary<string, bool>
+            {
+                {"t", false},
+                {"r", false},
+                {"b", false },
+                {"l", false}
+            };
+            string robotTargetDirection = "u";
+            IDictionary<string, bool> robotTargetBoundaries = new Dictionary<string, bool>
+            {
+                {"tl", false},
+                {"br", false}
+            };
 
-            // Human states name.
+            // Human inputs name.
             Console.WriteLine("What is your name?");
             humanPlayer.name = Console.ReadLine();
             Console.WriteLine("Hello {0}.\n", humanPlayer.name);
 
-            // Robot states name.
+            // Generate robot name.
             Random rand1 = new Random();
             robotPlayer.name = robotNames[rand1.Next(robotNames.Count)];
-            Console.WriteLine("Today you are playing against {0}.\n", robotPlayer.name);
+            Console.WriteLine("This game, you are playing against {0}.\n", robotPlayer.name);
 
             // Human places ships.
             Console.WriteLine("{0}, please place your ships.\n", humanPlayer.name);
@@ -63,8 +79,8 @@ namespace Battleship
             {
                 Console.WriteLine("Place your {0}, length of {1}.", shipType.Item1, shipType.Item2);
                 while(true){
-                    Console.WriteLine("Enter the coordinate (x, y), separated by a comma, no parentheses, x & y = 0-9:");
-                    var coordinateStringSplit = Console.ReadLine().Split(",");
+                    Console.WriteLine("Enter the coordinate (x, y), separated by a comma, no parentheses, x & y = 0 to 9:");
+                    string[] coordinateStringSplit = Console.ReadLine().Split(",");
                     Console.WriteLine("Enter the direction, v = vertical, h = horizontal:");
                     string direction = Console.ReadLine();
                     IDictionary<string, bool> placeShipInfo = humanPlayer.placeShip(
@@ -103,7 +119,7 @@ namespace Battleship
             Console.WriteLine("You have placed all of your 5 ships. This is what your board looks like:");
             Console.WriteLine(humanPlayer.getBoard(false));
 
-            // Computer place ships.
+            // Robot places ships.
             Console.WriteLine("Now {0} is placing its ships.", robotPlayer.name);
             foreach(Tuple<string, int> shipType in shipTypes)
             {
@@ -124,7 +140,62 @@ namespace Battleship
                 }
                 Console.WriteLine("{0} has placed its {1}.", robotPlayer.name, shipType.Item1);
             }
-            Console.WriteLine(robotPlayer.getBoard(false));
+            Console.WriteLine("{0} has placed all of its ships.", robotPlayer.name);
+
+            // Strike each others ships.
+            while(true)
+            {
+                // Human place strike.
+                Console.WriteLine("{0}, it's your turn to place a strike.", humanPlayer.name);
+                Console.WriteLine("What {0}'s board looks like:", robotPlayer.name);
+                Console.WriteLine(robotPlayer.getBoard(true));
+
+                while (true)
+                {
+                    Console.WriteLine("Enter the coordinate you want to strike (x, y), separated by a comma, no parentheses, x & y = 0 to 9:");
+                    string[] coordinateStringSplit = Console.ReadLine().Split(",");
+                    IDictionary<string, bool> attackInfo = robotPlayer.attackThisPlayersShip(coordinateStringSplit.Count() == 2 ?
+                        (object)new Tuple<string, string>(coordinateStringSplit[0], coordinateStringSplit[1])
+                        :
+                        (object)false);
+                    if (attackInfo["strikePlaced"])
+                    {
+                        Console.WriteLine("The strike was placed, {0}",
+                            attackInfo["isHit"] ?
+                                "and you've hit a ship!"
+                                :
+                                "but you didn't hit a ship."
+                            );
+                        if (attackInfo["allShipsHit"])
+                        {
+                            endGame(humanPlayer);
+                        }
+                        break;
+                    }
+                    if (!attackInfo["validCoord"])
+                    {
+                        Console.WriteLine("Error: Invalid coordinate.");
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Coordinate already struck.");
+                        continue;
+                    }
+                }
+
+                // Robot place strike.
+                while(true)
+                {
+                    // Not done.
+                    break;
+                }
+            }
+        }
+
+        static void endGame(Player winner)
+        {
+
         }
 
         static void printDictionaryStringBool(IDictionary<string, bool> dict)

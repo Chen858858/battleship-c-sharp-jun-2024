@@ -5,6 +5,7 @@ namespace Battleship
     class Player
     {
         public string name { get; set; }
+        public bool isRobot { get; set; }
         public Board playerBoard;
 
         public Player() { 

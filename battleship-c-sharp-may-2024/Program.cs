@@ -200,6 +200,13 @@ namespace Battleship
                             robotTargetBoundaries["tl"] = false;
                             robotTargetBoundaries["br"] = false;
                         }
+                        Tuple<int, int> coord = calcRandomStrikeCoord(humanPlayer);
+                        robotStrikeInfo = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(coord.Item1.ToString(), coord.Item2.ToString()));
+                        robotStrikeCoord = coord;
+                        if (robotStrikeInfo["isHit"])
+                        {
+                            robotTarget.Add(coord);
+                        }
                     }
                 }
             }

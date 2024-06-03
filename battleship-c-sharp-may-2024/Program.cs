@@ -62,6 +62,8 @@ namespace Battleship
                 {"tl", false},
                 {"br", false}
             };
+            IDictionary<string, bool> robotStrikeInfo;
+            Tuple<int, int> robotStrikeCoord;
 
             // Human inputs name.
             Console.WriteLine("What is your name?");
@@ -185,10 +187,20 @@ namespace Battleship
                 }
 
                 // Robot place strike.
-                while(true)
+                Console.WriteLine("Now {0} places its strike.", robotPlayer.name);
+                while (true)
                 {
-                    // Not done.
-                    break;
+                    // If the computer has no target, place random strike.
+                    if(robotTarget.Count() == 0 || robotTarget.Count() == 5)
+                    {
+                        if(robotTarget.Count() == 5)
+                        {
+                            robotTarget.Clear();
+                            robotTargetDirection = "u";
+                            robotTargetBoundaries["tl"] = false;
+                            robotTargetBoundaries["br"] = false;
+                        }
+                    }
                 }
             }
         }
@@ -198,6 +210,50 @@ namespace Battleship
 
         }
 
+        /*
+         * Function description:
+         *  Calculates a random coordinate for the computer to strike. For optimization, it checks the y rows to see which one has been struck the least.
+         * 
+         * Parameters:
+         *  humanPlayer = The human player.
+         *  
+         * Returns:
+         *  The coordinate to strike.
+         */
+        static Tuple<int, int> calcRandomStrikeCoord(Player humanPlayer)
+        {
+            List<Tuple<int, int>> strikeCoords = humanPlayer.strikesOnThisPlayersShips();
+            IDictionary<int, int> strikeCoordsByY = new Dictionary<int, int>();
+            for(int yInLoop = 0; yInLoop < 9; yInLoop++)
+            {
+                strikeCoordsByY[yInLoop] = 0;
+            }
+            foreach(Tuple<int, int> coord in strikeCoords)
+            {
+                strikeCoordsByY[coord.Item1] += 1;
+            }
+            int y = strikeCoordsByY.MinBy(kvp => kvp.Value).Key;
+            Random rand1 = new Random();
+            while (true)
+            {
+                Tuple<int, int> coord = new Tuple<int, int>(y, rand1.Next());
+                if (!strikeCoords.Contains(coord))
+                {
+                    return coord;
+                }
+            }
+        }
+
+        /*
+         * Function description:
+         *  Prints out dictionary of string and bool.
+         * 
+         * Parameters:
+         *  dict = Dictionary to print.
+         *  
+         * Returns:
+         *  None.
+         */
         static void printDictionaryStringBool(IDictionary<string, bool> dict)
         {
             foreach(KeyValuePair<string, bool> kvp in dict)

@@ -279,6 +279,79 @@ namespace Battleship
                             }
                         }
                     }
+                    // If the computer has found a target and know its direction, use the known information to strike.
+                    else if(robotTarget.Count >= 2 && robotTarget.Count <= 4)
+                    {
+                        while(robotStrikeCoord == null) { 
+                            if(robotTargetBoundaries.Values.All(value => value))
+                            {
+                                robotTarget.Clear();
+                                robotTargetBoundaries["tl"] = false;
+                                robotTargetBoundaries["br"] = false;
+                                robotTargetDirection = "u";
+                                robotStrikeCoord = calcRandomStrikeCoord(humanPlayer);
+                                robotStrikeInfo = humanPlayer.attackThisPlayersShip(new Tuple<string, string>(robotStrikeCoord.Item1.ToString(), robotStrikeCoord.Item2.ToString()));
+                                if (robotStrikeInfo["isHit"])
+                                {
+                                    robotTarget.Add(robotStrikeCoord);
+                                }
+                            }
+                            else
+                            {
+                                Tuple<int, int> coord = null;
+                                string addToFrontOrEnd = null;
+                                if (!robotTargetBoundaries["tl"])
+                                {
+                                    addToFrontOrEnd = "f";
+                                    coord = robotTarget[0];
+                                    if(robotTargetDirection == "h") {
+                                        coord = new Tuple<int, int>(coord.Item1 - 1, coord.Item2);
+                                    }
+                                    else
+                                    {
+                                        coord = new Tuple<int, int>(coord.Item1, coord.Item2 - 1);
+                                    }
+                                }
+                                else if (!robotTargetBoundaries["br"])
+                                {
+                                    addToFrontOrEnd = "e";
+                                    coord = robotTarget.Last();
+                                    if(robotTargetDirection == "h")
+                                    {
+                                        coord = new Tuple<int, int>(coord.Item1 + 1, coord.Item2);
+                                    }
+                                    else
+                                    {
+                                        coord = new Tuple<int, int>(coord.Item1, coord.Item2 + 1);
+                                    }
+                                    IDictionary<string, bool> attackInfo = humanPlayer.attackThisPlayersShip(coord);
+                                    if (!attackInfo["isHit"])
+                                    {
+                                        robotTargetBoundaries[
+                                            addToFrontOrEnd == "f" ?
+                                            "tl" : "br"
+                                            ] = true;
+                                    }
+                                    else
+                                    {
+                                        if(addToFrontOrEnd == "f")
+                                        {
+                                            robotTarget.Insert(0, coord); ;
+                                        }
+                                        else
+                                        {
+                                            robotTarget.Add(coord);
+                                        }
+                                    }
+                                    if (attackInfo["strikePlaced"])
+                                    {
+                                        robotStrikeInfo = attackInfo;
+                                        robotStrikeCoord = coord;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -63,7 +63,7 @@ namespace Battleship
                 {"br", false}
             };
             IDictionary<string, bool> robotStrikeInfo;
-            Tuple<int, int> robotStrikeCoord;
+            Tuple<int, int> robotStrikeCoord = null;
 
             // Human inputs name.
             Console.WriteLine("What is your name?");
@@ -206,6 +206,77 @@ namespace Battleship
                         if (robotStrikeInfo["isHit"])
                         {
                             robotTarget.Add(coord);
+                        }
+                    }
+                    // If the computer has found a target but doesn't know its direction, check sorrounding coordinates for ships.
+                    else if(robotTarget.Count() == 1)
+                    {
+                        Tuple<int, int> robotInitTarget = robotTarget[0];
+                        while (robotStrikeCoord == null)
+                        {
+                            if(robotInitTargetSorrounding.Values.All(value => value))
+                            {
+                                robotTarget.Clear();
+                                foreach(string direction in robotInitTargetSorrounding.Keys.ToList())
+                                {
+                                    robotInitTargetSorrounding[direction] = false;
+                                }
+                                Tuple<int, int> coord = calcRandomStrikeCoord(humanPlayer);
+                                robotStrikeInfo = humanPlayer.attackThisPlayersShip(coord);
+                                robotStrikeCoord = coord;
+                                if (robotStrikeInfo["isHit"])
+                                {
+                                    robotTarget.Add(coord);
+                                }
+                            }
+                            else
+                            {
+                                Tuple<int, int> coord = robotInitTarget;
+                                string directionChecked = null;
+                                if (!robotInitTargetSorrounding["t"])
+                                {
+                                    directionChecked = "t";
+                                    coord = new Tuple<int, int>(coord.Item1, coord.Item2 - 1);
+                                }
+                                else if (!robotInitTargetSorrounding["r"])
+                                {
+                                    directionChecked = "r";
+                                    coord = new Tuple<int, int>(coord.Item1 + 1, coord.Item2);
+                                }
+                                else if (!robotInitTargetSorrounding["b"])
+                                {
+                                    directionChecked = "b";
+                                    coord = new Tuple<int, int>(coord.Item1, coord.Item2 + 1);
+                                }
+                                else if (!robotInitTargetSorrounding["l"])
+                                {
+                                    directionChecked = "l";
+                                    coord = new Tuple<int, int>(coord.Item1 - 1, coord.Item2);
+                                }
+                                robotInitTargetSorrounding[directionChecked] = true;
+                                IDictionary<string, bool> robotStrikeInfoTemp = humanPlayer.attackThisPlayersShip(coord);
+                                if (robotStrikeInfoTemp["strikePlaced"])
+                                {
+                                    robotStrikeCoord = coord;
+                                    robotStrikeInfo = robotStrikeInfoTemp;
+                                    if (robotStrikeInfo["isHit"])
+                                    {
+                                        foreach (string direction in robotInitTargetSorrounding.Keys.ToList())
+                                        {
+                                            robotInitTargetSorrounding[direction] = false;
+                                            robotTargetDirection = new List<string> { "r", "l" }.Contains(directionChecked) ? "h" : "v";
+                                            if (new List<string> { "t", "l" }.Contains(directionChecked))
+                                            {
+                                                robotTarget.Insert(0, robotStrikeCoord);
+                                            }
+                                            else
+                                            {
+                                                robotTarget.Add(robotStrikeCoord);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

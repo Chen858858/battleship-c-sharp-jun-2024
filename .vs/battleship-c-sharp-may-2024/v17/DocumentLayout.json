@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|solutionrelative:battleship-c-sharp-may-2024\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|c:\\users\\newsy\\documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|solutionrelative:battleship-c-sharp-may-2024\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|c:\\users\\newsy\\documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|solutionrelative:battleship-c-sharp-may-2024\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|c:\\users\\newsy\\documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3DCF366-FC5D-41EF-A27C-2DA8E6F9ACB1}|battleship-c-sharp-may-2024\\battleship-c-sharp-may-2024.csproj|solutionrelative:battleship-c-sharp-may-2024\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Program.cs",
               "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\Program.cs",
               "RelativeToolTip": "battleship-c-sharp-may-2024\\Program.cs",
-              "ViewState": "AQIAANoAAAAAAAAAAAAUwOMAAAAhAAAA",
+              "ViewState": "AQIAAEABAAAAAAAAAAAkwFMBAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-23T04:46:14.933Z",
               "IsPinned": true,
@@ -40,25 +40,25 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\Player.cs",
               "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Player.cs",
               "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\Player.cs",
               "RelativeToolTip": "battleship-c-sharp-may-2024\\Player.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAAA0wCsAAAA+AAAA",
+              "ViewState": "AQIAAD8AAAAAAAAAAAAkwEcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-03T17:53:17.764Z"
+              "WhenOpened": "2024-06-09T04:03:47.54Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Board.cs",
               "DocumentMoniker": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\Board.cs",
               "RelativeDocumentMoniker": "battleship-c-sharp-may-2024\\Board.cs",
               "ToolTip": "C:\\Users\\newsy\\Documents\\battleship-c-sharp-june-2024\\battleship-c-sharp-may-2024\\Board.cs",
               "RelativeToolTip": "battleship-c-sharp-may-2024\\Board.cs",
-              "ViewState": "AQIAAIgAAAAAAAAAAAAUwJUAAAA0AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAKEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-23T17:12:49.355Z"
             }

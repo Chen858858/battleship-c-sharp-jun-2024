@@ -77,12 +77,14 @@ namespace Battleship
             int size,
             string direction)
         {
-            IDictionary<string, bool> info = new Dictionary<string, bool>();
-            info.Add("validCoord", false);
-            info.Add("validDirection", false);
-            info.Add("fitsOnBoard", false);
-            info.Add("noConflicts", false);
-            info.Add("shipPlaced", false);
+            IDictionary<string, bool> info = new Dictionary<string, bool>()
+            {
+                { "validCoord", false },
+                { "validDirection", false},
+                { "fitsOnBoard", false},
+                { "noConflicts", false },
+                { "shipPlaced", false }
+            };
 
             // Checks if the coordinate is valid.
             if(!checkCoord(coord))
@@ -149,12 +151,14 @@ namespace Battleship
          */
         public IDictionary<string, bool> placeStrike(object coord)
         {
-            IDictionary<string, bool> info = new Dictionary<string, bool>();
-            info.Add("validCoord", false);
-            info.Add("availableCoord", false);
-            info.Add("strikePlaced", false);
-            info.Add("isHit", false);
-            info.Add("allShipsHit", false);
+            IDictionary<string, bool> info = new Dictionary<string, bool>()
+            {
+                { "validCoord", false},
+                { "availableCoord", false },
+                { "strikePlaced", false },
+                { "isHit", false},
+                { "allShipsHit", false },
+            };
 
             // Checks if the coordinate is valid.
             if(!checkCoord(coord))
@@ -179,7 +183,7 @@ namespace Battleship
             info["strikePlaced"] = true;
 
             // Checks if the strike is a hit.
-            if(shipCoords.Contains(new Tuple<int, int>(xNum, yNum)))
+            if (shipCoords.Contains(new Tuple<int, int>(xNum, yNum)))
             {
                 info["isHit"] = true;
                 hitCoords.Add(Tuple.Create(xNum, yNum));

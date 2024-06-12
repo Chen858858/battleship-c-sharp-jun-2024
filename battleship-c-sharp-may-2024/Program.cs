@@ -1,9 +1,9 @@
 ﻿/*
  * Battleship made with C#, May 2024 version.
  * By Junchen Wang.
- *  Website: https://chen858858.github.io
- *  GitHub: https://github.com/Chen858858
- *  This project's repository: 
+ *  Website: https://chen858858.github.io .
+ *  GitHub: https://github.com/Chen858858 .
+ *  This project's repository: https://github.com/Chen858858/battleship-c-sharp-jun-2024 .
  * Created May 2024.
  */
 
@@ -62,7 +62,7 @@ namespace Battleship
                 {"tl", false},
                 {"br", false}
             };
-            IDictionary<string, bool> robotStrikeInfo;
+            IDictionary<string, bool> robotStrikeInfo = null;
             Tuple<int, int> robotStrikeCoord = null;
 
             // Human inputs name.
@@ -162,7 +162,7 @@ namespace Battleship
                         (object)false);
                     if (attackInfo["strikePlaced"])
                     {
-                        Console.WriteLine("The strike was placed, {0}",
+                        Console.WriteLine("The strike was placed, {0}\n",
                             attackInfo["isHit"] ?
                                 "and you've hit a ship!"
                                 :
@@ -171,6 +171,7 @@ namespace Battleship
                         if (attackInfo["allShipsHit"])
                         {
                             endGame(humanPlayer);
+                            return;
                         }
                         break;
                     }
@@ -188,177 +189,242 @@ namespace Battleship
 
                 // Robot place strike.
                 Console.WriteLine("Now {0} places its strike.", robotPlayer.name);
-                while (true)
+
+                // If the computer has no target, place random strike.
+                if(robotTarget.Count() == 0 || robotTarget.Count() == 5)
                 {
-                    // If the computer has no target, place random strike.
-                    if(robotTarget.Count() == 0 || robotTarget.Count() == 5)
+                    if (robotTarget.Count() == 5)
                     {
-                        if(robotTarget.Count() == 5)
+                        robotTarget.Clear();
+                        robotTargetDirection = "u";
+                        robotTargetBoundaries["tl"] = false;
+                        robotTargetBoundaries["br"] = false;
+                    }
+                    Tuple<int, int> coord = calcRandomStrikeCoord(humanPlayer);
+                    robotStrikeInfo = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(coord.Item1.ToString(), coord.Item2.ToString()));
+                    robotStrikeCoord = (Tuple<int, int>)coord;
+                    if (robotStrikeInfo["isHit"])
+                    {
+                        robotTarget.Add((Tuple<int, int>)coord);
+                    }
+                }
+                // If the computer has found a target but doesn't know its direction, check sorrounding coordinates for ships.
+                else if(robotTarget.Count() == 1)
+                {
+                    Tuple<int, int> robotInitTarget = robotTarget[0];
+                    while (robotStrikeCoord == null)
+                    {
+                        if(robotInitTargetSorrounding.Values.All(value => value))
                         {
                             robotTarget.Clear();
-                            robotTargetDirection = "u";
-                            robotTargetBoundaries["tl"] = false;
-                            robotTargetBoundaries["br"] = false;
-                        }
-                        Tuple<int, int> coord = calcRandomStrikeCoord(humanPlayer);
-                        robotStrikeInfo = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(coord.Item1.ToString(), coord.Item2.ToString()));
-                        robotStrikeCoord = coord;
-                        if (robotStrikeInfo["isHit"])
-                        {
-                            robotTarget.Add(coord);
-                        }
-                    }
-                    // If the computer has found a target but doesn't know its direction, check sorrounding coordinates for ships.
-                    else if(robotTarget.Count() == 1)
-                    {
-                        Tuple<int, int> robotInitTarget = robotTarget[0];
-                        while (robotStrikeCoord == null)
-                        {
-                            if(robotInitTargetSorrounding.Values.All(value => value))
+                            foreach(string direction in robotInitTargetSorrounding.Keys.ToList())
                             {
-                                robotTarget.Clear();
-                                foreach(string direction in robotInitTargetSorrounding.Keys.ToList())
-                                {
-                                    robotInitTargetSorrounding[direction] = false;
-                                }
-                                Tuple<int, int> coord = calcRandomStrikeCoord(humanPlayer);
-                                robotStrikeInfo = humanPlayer.attackThisPlayersShip(coord);
-                                robotStrikeCoord = coord;
+                                robotInitTargetSorrounding[direction] = false;
+                            }
+                            robotStrikeCoord = calcRandomStrikeCoord(humanPlayer);
+                            robotStrikeInfo = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(robotStrikeCoord.Item1.ToString(), robotStrikeCoord.Item2.ToString()));
+                            if (robotStrikeInfo["isHit"])
+                            {
+                                robotTarget.Add(robotStrikeCoord);
+                            }
+                        }
+                        else
+                        {
+                            Tuple<int, int> coord = (Tuple<int, int>)robotInitTarget;
+                            string directionChecked = null;
+                            if (!robotInitTargetSorrounding["t"])
+                            {
+                                directionChecked = "t";
+                                coord = new Tuple<int, int>(coord.Item1, coord.Item2 - 1);
+                            }
+                            else if (!robotInitTargetSorrounding["r"])
+                            {
+                                directionChecked = "r";
+                                coord = new Tuple<int, int>(coord.Item1 + 1, coord.Item2);
+                            }
+                            else if (!robotInitTargetSorrounding["b"])
+                            {
+                                directionChecked = "b";
+                                coord = new Tuple<int, int>(coord.Item1, coord.Item2 + 1);
+                            }
+                            else if (!robotInitTargetSorrounding["l"])
+                            {
+                                directionChecked = "l";
+                                coord = new Tuple<int, int>(coord.Item1 - 1, coord.Item2);
+                            }
+                            robotInitTargetSorrounding[directionChecked] = true;
+                            IDictionary<string, bool> robotStrikeInfoTemp = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(coord.Item1.ToString(), coord.Item2.ToString()));
+                            if (robotStrikeInfoTemp["strikePlaced"])
+                            {
+                                robotStrikeCoord = (Tuple<int, int>)coord;
+                                robotStrikeInfo = robotStrikeInfoTemp;
                                 if (robotStrikeInfo["isHit"])
                                 {
-                                    robotTarget.Add(coord);
-                                }
-                            }
-                            else
-                            {
-                                Tuple<int, int> coord = robotInitTarget;
-                                string directionChecked = null;
-                                if (!robotInitTargetSorrounding["t"])
-                                {
-                                    directionChecked = "t";
-                                    coord = new Tuple<int, int>(coord.Item1, coord.Item2 - 1);
-                                }
-                                else if (!robotInitTargetSorrounding["r"])
-                                {
-                                    directionChecked = "r";
-                                    coord = new Tuple<int, int>(coord.Item1 + 1, coord.Item2);
-                                }
-                                else if (!robotInitTargetSorrounding["b"])
-                                {
-                                    directionChecked = "b";
-                                    coord = new Tuple<int, int>(coord.Item1, coord.Item2 + 1);
-                                }
-                                else if (!robotInitTargetSorrounding["l"])
-                                {
-                                    directionChecked = "l";
-                                    coord = new Tuple<int, int>(coord.Item1 - 1, coord.Item2);
-                                }
-                                robotInitTargetSorrounding[directionChecked] = true;
-                                IDictionary<string, bool> robotStrikeInfoTemp = humanPlayer.attackThisPlayersShip(coord);
-                                if (robotStrikeInfoTemp["strikePlaced"])
-                                {
-                                    robotStrikeCoord = coord;
-                                    robotStrikeInfo = robotStrikeInfoTemp;
-                                    if (robotStrikeInfo["isHit"])
+                                    foreach (string direction in robotInitTargetSorrounding.Keys.ToList())
                                     {
-                                        foreach (string direction in robotInitTargetSorrounding.Keys.ToList())
-                                        {
-                                            robotInitTargetSorrounding[direction] = false;
-                                            robotTargetDirection = new List<string> { "r", "l" }.Contains(directionChecked) ? "h" : "v";
-                                            if (new List<string> { "t", "l" }.Contains(directionChecked))
-                                            {
-                                                robotTarget.Insert(0, robotStrikeCoord);
-                                            }
-                                            else
-                                            {
-                                                robotTarget.Add(robotStrikeCoord);
-                                            }
-                                        }
+                                        robotInitTargetSorrounding[direction] = false;
+                                        robotTargetDirection = new List<string> { "r", "l" }.Contains(directionChecked) ? "h" : "v";
                                     }
-                                }
-                            }
-                        }
-                    }
-                    // If the computer has found a target and know its direction, use the known information to strike.
-                    else if(robotTarget.Count >= 2 && robotTarget.Count <= 4)
-                    {
-                        while(robotStrikeCoord == null) { 
-                            if(robotTargetBoundaries.Values.All(value => value))
-                            {
-                                robotTarget.Clear();
-                                robotTargetBoundaries["tl"] = false;
-                                robotTargetBoundaries["br"] = false;
-                                robotTargetDirection = "u";
-                                robotStrikeCoord = calcRandomStrikeCoord(humanPlayer);
-                                robotStrikeInfo = humanPlayer.attackThisPlayersShip(new Tuple<string, string>(robotStrikeCoord.Item1.ToString(), robotStrikeCoord.Item2.ToString()));
-                                if (robotStrikeInfo["isHit"])
-                                {
-                                    robotTarget.Add(robotStrikeCoord);
-                                }
-                            }
-                            else
-                            {
-                                Tuple<int, int> coord = null;
-                                string addToFrontOrEnd = null;
-                                if (!robotTargetBoundaries["tl"])
-                                {
-                                    addToFrontOrEnd = "f";
-                                    coord = robotTarget[0];
-                                    if(robotTargetDirection == "h") {
-                                        coord = new Tuple<int, int>(coord.Item1 - 1, coord.Item2);
+                                    if (new List<string> { "t", "l" }.Contains(directionChecked))
+                                    {
+                                        robotTarget.Insert(0, robotStrikeCoord);
                                     }
                                     else
                                     {
-                                        coord = new Tuple<int, int>(coord.Item1, coord.Item2 - 1);
-                                    }
-                                }
-                                else if (!robotTargetBoundaries["br"])
-                                {
-                                    addToFrontOrEnd = "e";
-                                    coord = robotTarget.Last();
-                                    if(robotTargetDirection == "h")
-                                    {
-                                        coord = new Tuple<int, int>(coord.Item1 + 1, coord.Item2);
-                                    }
-                                    else
-                                    {
-                                        coord = new Tuple<int, int>(coord.Item1, coord.Item2 + 1);
-                                    }
-                                    IDictionary<string, bool> attackInfo = humanPlayer.attackThisPlayersShip(coord);
-                                    if (!attackInfo["isHit"])
-                                    {
-                                        robotTargetBoundaries[
-                                            addToFrontOrEnd == "f" ?
-                                            "tl" : "br"
-                                            ] = true;
-                                    }
-                                    else
-                                    {
-                                        if(addToFrontOrEnd == "f")
-                                        {
-                                            robotTarget.Insert(0, coord); ;
-                                        }
-                                        else
-                                        {
-                                            robotTarget.Add(coord);
-                                        }
-                                    }
-                                    if (attackInfo["strikePlaced"])
-                                    {
-                                        robotStrikeInfo = attackInfo;
-                                        robotStrikeCoord = coord;
+                                        robotTarget.Add(robotStrikeCoord);
                                     }
                                 }
                             }
                         }
                     }
                 }
+                // If the computer has found a target and know its direction, use the known information to strike.
+                else if(robotTarget.Count() >= 2 && robotTarget.Count() <= 4)
+                {
+                    while (robotStrikeCoord == null) {
+                        if (robotTargetBoundaries.Values.All(value => value))
+                        {
+                            robotTarget.Clear();
+                            robotTargetBoundaries["tl"] = false;
+                            robotTargetBoundaries["br"] = false;
+                            robotTargetDirection = "u";
+                            robotStrikeCoord = calcRandomStrikeCoord(humanPlayer);
+                            robotStrikeInfo = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(robotStrikeCoord.Item1.ToString(), robotStrikeCoord.Item2.ToString()));
+                            if (robotStrikeInfo["isHit"])
+                            {
+                                robotTarget.Add(robotStrikeCoord);
+                            }
+                        }
+                        else
+                        {
+                            Tuple<int, int> coord = null;
+                            string addToFrontOrEnd = null;
+                            if (!robotTargetBoundaries["tl"])
+                            {
+                                addToFrontOrEnd = "f";
+                                coord = robotTarget[0];
+                                if(robotTargetDirection == "h") {
+                                    coord = new Tuple<int, int>(coord.Item1 - 1, coord.Item2);
+                                }
+                                else
+                                {
+                                    coord = new Tuple<int, int>(coord.Item1, coord.Item2 - 1);
+                                }
+                            }
+                            else if (!robotTargetBoundaries["br"])
+                            {
+                                addToFrontOrEnd = "e";
+                                coord = robotTarget.Last();
+                                if(robotTargetDirection == "h")
+                                {
+                                    coord = new Tuple<int, int>(coord.Item1 + 1, coord.Item2);
+                                }
+                                else
+                                {
+                                    coord = new Tuple<int, int>(coord.Item1, coord.Item2 + 1);
+                                }
+                            }
+                            IDictionary<string, bool> attackInfo = humanPlayer.attackThisPlayersShip((object)new Tuple<string, string>(coord.Item1.ToString(), coord.Item2.ToString()));
+                            if (!attackInfo["isHit"])
+                            {
+                                robotTargetBoundaries[
+                                    addToFrontOrEnd == "f" ?
+                                    "tl" : "br"
+                                    ] = true;
+                            }
+                            else
+                            {
+                                if (addToFrontOrEnd == "f")
+                                {
+                                    robotTarget.Insert(0, coord); ;
+                                }
+                                else
+                                {
+                                    robotTarget.Add(coord);
+                                }
+                            }
+                            if (attackInfo["strikePlaced"])
+                            {
+                                robotStrikeInfo = attackInfo;
+                                robotStrikeCoord = (Tuple<int, int>)coord;
+                            }
+                        }
+                    }
+                }
+                
+                string robotStrikeCoordStr = "(" + robotStrikeCoord.Item1 + ", " + robotStrikeCoord.Item2 + ")";
+                string waterOrShip = !robotStrikeInfo["isHit"] ? "water" : "one of your ships";
+                Console.WriteLine("{0} has placed its strike on {1}, which was {2}.\n", robotPlayer.name, robotStrikeCoordStr, waterOrShip);
+                if (robotStrikeInfo["allShipsHit"])
+                {
+                    endGame(robotPlayer);
+                    return;
+                }
+                Console.WriteLine("What your board looks like:\n{0}\n", humanPlayer.getBoard(false));
+                robotStrikeCoord = null;
+                robotStrikeInfo = null;
             }
         }
 
+        /*
+         * Function description:
+         *  The end of the game.
+         *
+         * Parameters:
+         *  winner = The winning player.
+         *  
+         * Returns:
+         *  Nothing.
+         */
         static void endGame(Player winner)
         {
-
+            Console.WriteLine("");
+            if (winner.isRobot)
+            {
+                Console.WriteLine("Sorry, {0} won this game.", winner.name);
+                Thread.Sleep(1000);
+                Console.WriteLine("Maybe next time you'll win.");
+            }
+            else
+            {
+                Console.WriteLine("Congratulations {0}!", winner.name);
+                Thread.Sleep(1000);
+                Console.WriteLine("You are victorious!");
+            }
+            Thread.Sleep(750);
+            List<string> gg = new List<string>()
+            {
+                "         _              _        ",
+                "        /\\ \\           /\\ \\      ",
+                "       /  \\ \\         /  \\ \\     ",
+                "      / /\\ \\_\\       / /\\ \\_\\    ",
+                "     / / /\\/_/      / / /\\/_/    ",
+                "    / / / ______   / / / ______  ",
+                "   / / / /\\_____\\ / / / /\\_____\\ ",
+                "  / / /  \\/____ // / /  \\/____ / ",
+                " / / /_____/ / // / /_____/ / /  ",
+                "/ / /______\\/ // / /______\\/ /   ",
+                "\\/___________/ \\/___________/    "
+            };
+            foreach(string line in gg)
+            {
+                Console.WriteLine(line);
+                Thread.Sleep(500);
+            }
+            Console.WriteLine("");
+            List<string> credits = new List<string>()
+            {
+                "Made by Junchen Wang with C#.",
+                "--- Website: chen858858.github.io .",
+                "--- GitHub: github.com/Chen858858 .\n",
+                "Initial release: June 2024.\n",
+                "This project's repository: github.com/Chen858858/battleship-c-sharp-jun-2024 ."
+            };
+            foreach(string line in credits)
+            {
+                Console.WriteLine(line);
+                Thread.Sleep(1000);
+            }
         }
 
         /*
@@ -375,19 +441,19 @@ namespace Battleship
         {
             List<Tuple<int, int>> strikeCoords = humanPlayer.strikesOnThisPlayersShips();
             IDictionary<int, int> strikeCoordsByY = new Dictionary<int, int>();
-            for(int yInLoop = 0; yInLoop < 9; yInLoop++)
+            for(int yInLoop = 0; yInLoop <= 9; yInLoop++)
             {
                 strikeCoordsByY[yInLoop] = 0;
             }
             foreach(Tuple<int, int> coord in strikeCoords)
             {
-                strikeCoordsByY[coord.Item1] += 1;
+                strikeCoordsByY[coord.Item2] += 1;
             }
             int y = strikeCoordsByY.MinBy(kvp => kvp.Value).Key;
             Random rand1 = new Random();
             while (true)
             {
-                Tuple<int, int> coord = new Tuple<int, int>(y, rand1.Next());
+                Tuple<int, int> coord = new Tuple<int, int>(rand1.Next(0, 10), y);
                 if (!strikeCoords.Contains(coord))
                 {
                     return coord;

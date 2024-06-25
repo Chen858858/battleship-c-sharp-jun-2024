@@ -64,16 +64,35 @@ namespace Battleship
             };
             IDictionary<string, bool> robotStrikeInfo = null;
             Tuple<int, int> robotStrikeCoord = null;
+            
+            List<string> intro = new List<string>()
+            {
+                "Welcome to this game of Battleship, made with C#.\n",
+                "Here are the instructions:",
+                "1. Place your ships.",
+                "2. Attack the other player's ships.",
+                "3. The player who has attacked all of the other player's ships first wins."
+            };
+
+            foreach (string line in intro)
+            {
+                Console.WriteLine(line);
+                Thread.Sleep(1200);
+            }
+            Console.WriteLine();
 
             // Human inputs name.
             Console.WriteLine("What is your name?");
             humanPlayer.name = Console.ReadLine();
+            Thread.Sleep(500);
             Console.WriteLine("Hello {0}.\n", humanPlayer.name);
+            Thread.Sleep(1000);
 
             // Generate robot name.
             Random rand1 = new Random();
             robotPlayer.name = robotNames[rand1.Next(robotNames.Count)];
             Console.WriteLine("This game, you are playing against {0}.\n", robotPlayer.name);
+            Thread.Sleep(1200);
 
             // Human places ships.
             Console.WriteLine("{0}, please place your ships.\n", humanPlayer.name);

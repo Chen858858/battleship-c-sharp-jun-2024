@@ -73,6 +73,13 @@ namespace Battleship
                 "2. Attack the other player's ships.",
                 "3. The player who has attacked all of the other player's ships first wins."
             };
+            List<string> boardKey = new List<string>()
+            {
+                "~ = Water.",
+                "$ = Ship.",
+                "X = Hit, but missed ship.",
+                "* = Hit, on a ship."
+            };
 
             foreach (string line in intro)
             {
@@ -93,6 +100,20 @@ namespace Battleship
             robotPlayer.name = robotNames[rand1.Next(robotNames.Count)];
             Console.WriteLine("This game, you are playing against {0}.\n", robotPlayer.name);
             Thread.Sleep(1200);
+
+            // Board information.
+            Console.WriteLine("Let's learn about the board.\n");
+            Thread.Sleep(1200);
+            foreach(string line in boardKey)
+            {
+                Console.WriteLine(line);
+                Thread.Sleep(1000);
+            }
+            Console.WriteLine();
+            Thread.Sleep(1500);
+
+            // Place ships information.
+            Console.WriteLine("Now it is time to place the ships.\n");
 
             // Human places ships.
             Console.WriteLine("{0}, please place your ships.\n", humanPlayer.name);

@@ -80,6 +80,14 @@ namespace Battleship
                 "X = Hit, but missed ship.",
                 "* = Hit, on a ship."
             };
+            List<string> placeShipsInstructions = new List<string>
+            {
+                "To place a ship:",
+                "1. Enter the coordinate.",
+                "   - If it's a vertical ship, the top coordinate.",
+                "   - If it's horizontal, the left coordinate.",
+                "2. Enter the direction, v = vertical, h = horizontal."
+            };
 
             foreach (string line in intro)
             {
@@ -114,15 +122,25 @@ namespace Battleship
 
             // Place ships information.
             Console.WriteLine("Now it is time to place the ships.\n");
+            Thread.Sleep(1200);
+            foreach(string line in placeShipsInstructions)
+            {
+                Console.WriteLine(line);
+                Thread.Sleep(1200);
+            }
+            Console.WriteLine();
 
             // Human places ships.
             Console.WriteLine("{0}, please place your ships.\n", humanPlayer.name);
             foreach(Tuple<string, int> shipType in shipTypes)
             {
+                Thread.Sleep(1200);
                 Console.WriteLine("Place your {0}, length of {1}.", shipType.Item1, shipType.Item2);
                 while(true){
+                    Thread.Sleep(1200);
                     Console.WriteLine("Enter the coordinate (x, y), separated by a comma, no parentheses, x & y = 0 to 9:");
                     string[] coordinateStringSplit = Console.ReadLine().Split(",");
+                    Thread.Sleep(600);
                     Console.WriteLine("Enter the direction, v = vertical, h = horizontal:");
                     string direction = Console.ReadLine();
                     IDictionary<string, bool> placeShipInfo = humanPlayer.placeShip(
@@ -133,6 +151,7 @@ namespace Battleship
                         shipType.Item2,
                         direction
                         );
+                    Thread.Sleep(1200);
                     if (placeShipInfo["shipPlaced"])
                     {
                         Console.WriteLine("{0} placed.", shipType.Item1);
@@ -156,15 +175,20 @@ namespace Battleship
                     }
                     Console.WriteLine("\n");
                 }
+                Thread.Sleep(1200);
                 Console.WriteLine("\nHere is what your board currently looks like:\n{0}", humanPlayer.getBoard(false));
             }
+            Thread.Sleep(1200);
             Console.WriteLine("You have placed all of your 5 ships. This is what your board looks like:");
+            Thread.Sleep(600);
             Console.WriteLine(humanPlayer.getBoard(false));
+            Thread.Sleep(2000);
 
             // Robot places ships.
             Console.WriteLine("Now {0} is placing its ships.", robotPlayer.name);
             foreach(Tuple<string, int> shipType in shipTypes)
             {
+                Thread.Sleep(800);
                 Random rand2 = new Random();
                 while (true)
                 {
@@ -182,7 +206,8 @@ namespace Battleship
                 }
                 Console.WriteLine("{0} has placed its {1}.", robotPlayer.name, shipType.Item1);
             }
-            Console.WriteLine("{0} has placed all of its ships.", robotPlayer.name);
+            Console.WriteLine(800);
+            Console.WriteLine("{0} has placed all of its ships.\n", robotPlayer.name);
 
             // Strike each others ships.
             while(true)

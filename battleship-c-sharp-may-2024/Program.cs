@@ -118,7 +118,7 @@ namespace Battleship
                 Thread.Sleep(1000);
             }
             Console.WriteLine();
-            Thread.Sleep(1500);
+            Thread.Sleep(2400);
 
             // Place ships information.
             Console.WriteLine("Now it is time to place the ships.\n");
@@ -138,7 +138,7 @@ namespace Battleship
                 Console.WriteLine("Place your {0}, length of {1}.", shipType.Item1, shipType.Item2);
                 while(true){
                     Thread.Sleep(1200);
-                    Console.WriteLine("Enter the coordinate (x, y), separated by a comma, no parentheses, x & y = 0 to 9:");
+                    Console.WriteLine("Enter the coordinate (x, y), separated by a comma (,), no parentheses, x & y = 0 to 9:");
                     string[] coordinateStringSplit = Console.ReadLine().Split(",");
                     Thread.Sleep(600);
                     Console.WriteLine("Enter the direction, v = vertical, h = horizontal:");
@@ -206,25 +206,33 @@ namespace Battleship
                 }
                 Console.WriteLine("{0} has placed its {1}.", robotPlayer.name, shipType.Item1);
             }
-            Console.WriteLine(800);
+            Thread.Sleep(800);
             Console.WriteLine("{0} has placed all of its ships.\n", robotPlayer.name);
+            Thread.Sleep(1200);
 
             // Strike each others ships.
-            while(true)
+            Console.WriteLine("Now it's time to strike each other's ships.\n");
+            Thread.Sleep(1200);
+
+            while (true)
             {
                 // Human place strike.
                 Console.WriteLine("{0}, it's your turn to place a strike.", humanPlayer.name);
+                Thread.Sleep(800);
                 Console.WriteLine("What {0}'s board looks like:", robotPlayer.name);
+                Thread.Sleep(600);
                 Console.WriteLine(robotPlayer.getBoard(true));
 
                 while (true)
                 {
-                    Console.WriteLine("Enter the coordinate you want to strike (x, y), separated by a comma, no parentheses, x & y = 0 to 9:");
+                    Thread.Sleep(1200);
+                    Console.WriteLine("Enter the coordinate you want to strike (x, y), separated by a comma (,), no parentheses, x & y = 0 to 9:");
                     string[] coordinateStringSplit = Console.ReadLine().Split(",");
                     IDictionary<string, bool> attackInfo = robotPlayer.attackThisPlayersShip(coordinateStringSplit.Count() == 2 ?
                         (object)new Tuple<string, string>(coordinateStringSplit[0], coordinateStringSplit[1])
                         :
                         (object)false);
+                    Thread.Sleep(1000);
                     if (attackInfo["strikePlaced"])
                     {
                         Console.WriteLine("The strike was placed, {0}\n",
@@ -242,21 +250,23 @@ namespace Battleship
                     }
                     if (!attackInfo["validCoord"])
                     {
-                        Console.WriteLine("Error: Invalid coordinate.");
+                        Console.WriteLine("Error: Invalid coordinate.\n");
                         continue;
                     }
                     else
                     {
-                        Console.WriteLine("Error: Coordinate already struck.");
+                        Console.WriteLine("Error: Coordinate already struck.\nt");
                         continue;
                     }
                 }
+                Thread.Sleep(1200);
 
                 // Robot place strike.
                 Console.WriteLine("Now {0} places its strike.", robotPlayer.name);
+                Thread.Sleep(1200);
 
                 // If the computer has no target, place random strike.
-                if(robotTarget.Count() == 0 || robotTarget.Count() == 5)
+                if (robotTarget.Count() == 0 || robotTarget.Count() == 5)
                 {
                     if (robotTarget.Count() == 5)
                     {
@@ -425,7 +435,9 @@ namespace Battleship
                     endGame(robotPlayer);
                     return;
                 }
+                Thread.Sleep(1200);
                 Console.WriteLine("What your board looks like:\n{0}\n", humanPlayer.getBoard(false));
+                Thread.Sleep(1200);
                 robotStrikeCoord = null;
                 robotStrikeInfo = null;
             }
@@ -443,6 +455,7 @@ namespace Battleship
          */
         static void endGame(Player winner)
         {
+            Thread.Sleep(1500);
             Console.WriteLine("");
             if (winner.isRobot)
             {
